@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Controle do Micro-ondas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: #fff;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 20px;
+            background-color: transparent; /* Adiciona um fundo transparente para o contêiner */
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #333;
+            color: #fff;
+            border: none;
+        }
+        #output {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+        #microwave-img {
+            width: 50%; /* Define a largura da imagem como 50% do contêiner */
+            height: auto;
+            margin-bottom: 20px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Painel de Controle do Micro-ondas</h1>
+    <img id="microwave-img" src="https://i.imgur.com/1swxeeB.png" alt="Micro-ondas">
+    <form id="microwaveForm">
+        <button type="button" onclick="startMicrowave(30)">30 Segundos</button>
+        <button type="button" onclick="startMicrowave(60)">1 Minuto</button>
+        <button type="button" onclick="startMicrowave(120)">2 Minutos</button>
+        <button type="button" onclick="startMicrowave(240)">4 Minutos (Pipoca)</button>
+        <button type="button" onclick="stopMicrowave()">Parar</button>
+        <button type="button" onclick="changePower()">Alterar Potência</button>
+    </form>
+    <div id="output"></div>
+</div>
+
+<script>
+    let timer;
+    let currentTime = 0;
+
+    function startMicrowave(addTime) {
+        clearTimeout(timer); // Para o temporizador anterior
+        currentTime += addTime;
+        document.getElementById('output').innerText = `Micro-ondas iniciado por ${formatTime(currentTime)}`;
+        timer = setInterval(function() {
+            currentTime--;
+            if (currentTime >= 0) {
+                document.getElementById('output').innerText = `Tempo restante: ${formatTime(currentTime)}`;
+            } else {
+                clearInterval(timer);
+                document.getElementById('output').innerText = "Micro-ondas finalizado!";
+            }
+        }, 1000);
+    }
+
+    function stopMicrowave() {
+        clearInterval(timer); // Para o temporizador atual
+        currentTime = 0;
+        document.getElementById('output').innerText = "Micro-ondas parado";
+    }
+
+    function changePower() {
+        document.getElementById('output').innerText = "Potência Alterada";
+    }
+
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    }
+</script>
+
+</body>
+</html>
